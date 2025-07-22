@@ -1,0 +1,73 @@
+
+> gozo-authentic@0.1.0 build
+> next build --experimental-build-mode=compile
+
+   ▲ Next.js 15.4.1
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 23.0s
+
+./node_modules/libheif-js/libheif-wasm/libheif-bundle.js
+Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
+
+Import trace for requested module:
+./node_modules/libheif-js/libheif-wasm/libheif-bundle.js
+./node_modules/libheif-js/wasm-bundle.js
+./node_modules/heic-decode/index.js
+./node_modules/heic-convert/index.js
+./app/api/admin/gallery/upload/route.ts
+
+   Collecting page data ...
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Build ran with "compile" mode, to finalize the build run either "generate" or "generate-env" mode as well
+
+Route (app)                                         Size  First Load JS
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/[category-slug]
+├ ƒ /[locale]/[category-slug]/[experience-slug]
+├ ƒ /[locale]/track
+├ ƒ /[locale]/track/[reference]
+├ ƒ /admin
+├ ƒ /admin/categories
+├ ƒ /admin/experiences
+├ ƒ /admin/experiences/[id]/edit
+├ ƒ /admin/experiences/new
+├ ƒ /admin/gallery
+├ ƒ /admin/homepage
+├ ƒ /admin/leads
+├ ƒ /admin/login
+├ ƒ /admin/tags
+├ ƒ /admin/translations
+├ ƒ /admin/users
+├ ƒ /api/admin/categories
+├ ƒ /api/admin/categories/[id]
+├ ƒ /api/admin/experiences
+├ ƒ /api/admin/experiences/[id]
+├ ƒ /api/admin/gallery
+├ ƒ /api/admin/gallery/delete
+├ ƒ /api/admin/gallery/upload
+├ ƒ /api/admin/homepage
+├ ƒ /api/admin/leads/[id]
+├ ƒ /api/admin/tags
+├ ƒ /api/admin/tags/[id]
+├ ƒ /api/admin/translate
+├ ƒ /api/admin/translate-content
+├ ƒ /api/admin/users
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/content/[locale]
+├ ƒ /api/leads
+└ ƒ /sitemap.xml
++ First Load JS shared by all                    99.8 kB
+  ├ chunks/4bd1b696-602635ee57868870.js          54.1 kB
+  ├ chunks/5964-ff57af20ed6ce77d.js              43.7 kB
+  └ other shared chunks (total)                  1.93 kB
+
+
+ƒ Middleware                                       96 kB
+
+ƒ  (Dynamic)  server-rendered on demand
+

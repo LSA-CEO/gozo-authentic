@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "Ontdek het echte Gozo",
+    "subtitle": "Authentieke ervaringen met gepassioneerde locals",
+    "cta": "Boek een ervaring",
+    "activities": {
+      "quad": "Quad Avontuur",
+      "boat": "Boottochten",
+      "kayak": "Kajakken & Duiken",
+      "food": "Lokale Gastronomie"
+    }
+  },
+  "Contact": {
+    "title": "Contact",
+    "message": "Hallo, ik ben geïnteresseerd in",
+    "guests": "voor {count} persoon/personen",
+    "send": "Verstuur via WhatsApp"
+  }
+}

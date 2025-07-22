@@ -1,0 +1,112 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { supabase } from '../../../../../lib/supabase';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const { data, error } = await supabase
+    .from('experiences')
+    .select(`
+      *,
+      experience_tags(tag_id)
+    `)
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data);
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const body = await request.json();
+  const { tags, ...experienceData } = body;
+
+  // Mettre à jour l'expérience
+  const { data: experience, error: experienceError } = await supabase
+    .from('experiences')
+    .update(experienceData)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (experienceError) {
+    return NextResponse.json({ error: experienceError.message }, { status: 500 });
+  }
+
+  // Mettre à jour les tags
+  if (tags !== undefined) {
+    // Supprimer les anciens tags
+    await supabase
+      .from('experience_tags')
+      .delete()
+      .eq('experience_id', id);
+
+    // Ajouter les nouveaux tags
+    if (tags.length > 0) {
+      const experienceTags = tags.map((tagId: string) => ({
+        experience_id: id,
+        tag_id: tagId
+      }));
+
+      await supabase
+        .from('experience_tags')
+        .insert(experienceTags);
+    }
+  }
+
+  return NextResponse.json(experience);
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const body = await request.json();
+
+  const { data, error } = await supabase
+    .from('experiences')
+    .update(body)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json(data);
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  // Supprimer d'abord les tags associés
+  await supabase
+    .from('experience_tags')
+    .delete()
+    .eq('experience_id', id);
+
+  // Puis supprimer l'expérience
+  const { error } = await supabase
+    .from('experiences')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ success: true });
+}

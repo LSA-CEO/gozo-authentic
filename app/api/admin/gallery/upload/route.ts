@@ -1,0 +1,106 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../../lib/auth-config';
+import { supabaseAdmin } from '../../../../../lib/supabase-admin';
+import sharp from 'sharp';
+
+// Fonction pour convertir HEIC en JPG
+async function convertHeicToJpg(buffer: Buffer): Promise<Buffer> {
+  try {
+    // Utiliser dynamic import pour heic-convert (ESM module)
+    const convert = (await import('heic-convert')).default;
+    
+    const outputBuffer = await convert({
+      buffer: buffer,
+      format: 'JPEG',
+      quality: 0.9
+    });
+
+    // Optimiser avec sharp
+    return await sharp(outputBuffer)
+      .jpeg({ quality: 90 })
+      .toBuffer();
+  } catch (error) {
+    console.error('Error converting HEIC:', error);
+    throw new Error('Impossible de convertir l\'image HEIC');
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // Vérifier l'authentification
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+    }
+
+    // Récupérer le fichier depuis le FormData
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+    
+    if (!file) {
+      return NextResponse.json({ error: 'Aucun fichier fourni' }, { status: 400 });
+    }
+
+    // Vérifier le type de fichier
+    const fileName = file.name.toLowerCase();
+    const isHeic = fileName.endsWith('.heic') || fileName.endsWith('.heif');
+    
+    if (!file.type.startsWith('image/') && !isHeic) {
+      return NextResponse.json({ error: 'Le fichier doit être une image' }, { status: 400 });
+    }
+
+    // Vérifier la taille (10MB max)
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: 'Le fichier ne doit pas dépasser 10MB' }, { status: 400 });
+    }
+
+    // Convertir le File en Buffer
+    const arrayBuffer = await file.arrayBuffer();
+    let buffer = Buffer.from(arrayBuffer);
+    let contentType = file.type;
+    let fileExt = file.name.split('.').pop()?.toLowerCase();
+
+    // Si c'est un HEIC, le convertir en JPG
+    if (isHeic) {
+      console.log('Converting HEIC to JPG...');
+      buffer = Buffer.from(await convertHeicToJpg(buffer)) as any;
+      contentType = 'image/jpeg';
+      fileExt = 'jpg';
+    }
+
+    // Générer un nom unique
+    const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2)}`;
+    const finalFileName = `${uniqueName}.${fileExt}`;
+
+    // Upload vers Supabase Storage avec le client admin
+    const { data, error } = await supabaseAdmin.storage
+      .from('gallery')
+      .upload(finalFileName, buffer, {
+        contentType,
+        cacheControl: '3600'
+      });
+
+    if (error) {
+      console.error('Upload error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    // Obtenir l'URL publique
+    const { data: { publicUrl } } = supabaseAdmin.storage
+      .from('gallery')
+      .getPublicUrl(finalFileName);
+
+    return NextResponse.json({ 
+      url: publicUrl, 
+      path: finalFileName,
+      converted: isHeic 
+    });
+  } catch (error) {
+    console.error('Upload exception:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Erreur lors de l\'upload' },
+      { status: 500 }
+    );
+  }
+}

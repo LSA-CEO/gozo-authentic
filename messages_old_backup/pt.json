@@ -1,0 +1,20 @@
+{
+  "HomePage": {
+    "title": "Descubra o verdadeiro Gozo",
+    "subtitle": "Experiências autênticas com locais apaixonados",
+    "cta": "Reservar uma experiência",
+    "activities": {
+      "quad": "Aventura de Quadriciclo",
+      "boat": "Passeios de Barco",
+      "kayak": "Caiaque e Mergulho",
+      "food": "Gastronomia Local"
+    }
+  },
+  "Contact": {
+    "title": "Contacto",
+    "message": "Olá, estou interessado em",
+    "guests": "para {count} pessoa(s)",
+    "send": "Enviar no WhatsApp"
+  }
+}
+

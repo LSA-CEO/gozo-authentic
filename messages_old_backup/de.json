@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "Entdecke das echte Gozo",
+    "subtitle": "Authentische Erlebnisse mit leidenschaftlichen Einheimischen",
+    "cta": "Erlebnis buchen",
+    "activities": {
+      "quad": "Quad-Abenteuer",
+      "boat": "Bootstouren",
+      "kayak": "Kajak & Tauchen",
+      "food": "Lokale Gastronomie"
+    }
+  },
+  "Contact": {
+    "title": "Kontakt",
+    "message": "Hallo, ich interessiere mich für",
+    "guests": "für {count} Person(en)",
+    "send": "Auf WhatsApp senden"
+  }
+}
