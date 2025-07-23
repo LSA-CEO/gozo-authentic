@@ -40,3 +40,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 google-sheets-key.json
+
+# Scripts temporaires
+*.log
+scripts/temp/
+*.backup-*
+*-report-*.md
+missing-translations*.json
+
+# Fichiers SQL temporaires  
+generate-*.sql
+fix-*.sql
+enrich-*.sql
+
+.DS_Store
