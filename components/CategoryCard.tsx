@@ -9,6 +9,12 @@ interface CategoryCardProps {
   category: {
     id: string;
     slug: string;
+    slug_en?: string;
+    slug_de?: string;
+    slug_it?: string;
+    slug_nl?: string;
+    slug_es?: string;
+    slug_pt?: string;
     name_en: string;
     name_fr?: string;
     name_de?: string;
@@ -36,12 +42,17 @@ export function CategoryCard({ category, experienceCount }: CategoryCardProps) {
   
   const name = category[`name_${locale}`] || category.name_en;
   const description = category[`description_${locale}`] || category.description_en;
+  
+  // Obtenir le slug traduit
+  const categorySlug = locale === 'fr' 
+    ? category.slug 
+    : category[`slug_${locale}` as keyof typeof category] || category.slug;
 
-  console.log('Category data:', category.slug, category.image_url);
+  console.log('Category data:', category.slug, categorySlug, locale);
 
   
   return (
-    <Link href={`/${locale}/${category.slug}`}>
+    <Link href={`/${locale}/${categorySlug}`}>
       <div 
         className="group relative h-full cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}

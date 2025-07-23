@@ -1,13 +1,86 @@
+# Robots.txt for GozoAuthentic.com
+# Last updated: 2024
+
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /admin/
+Disallow: /_next/
+Disallow: /carnet
+Allow: /_next/static/
+Allow: /_next/image/
 
+# Sitemaps
 Sitemap: https://gozoauthentic.com/sitemap.xml
 
-# Specific crawler instructions
+# Major Search Engines
 User-agent: Googlebot
+Allow: /
 Crawl-delay: 0
 
 User-agent: Bingbot
+Allow: /
 Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# Social Media
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Pinterestbot
+Allow: /
+
+# SEO Tools
+User-agent: AhrefsBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Crawl-delay: 10
+
+# Bad bots
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+User-agent: moget
+Disallow: /
+
+User-agent: ichiro
+Disallow: /
+
+# GPTBot (OpenAI)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+# Claude (Anthropic)
+User-agent: Claude-Web
+Disallow: /

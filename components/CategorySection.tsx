@@ -8,6 +8,12 @@ import Image from 'next/image';
 interface Category {
   id: string;
   slug: string;
+  slug_en?: string;
+  slug_de?: string;
+  slug_it?: string;
+  slug_nl?: string;
+  slug_es?: string;
+  slug_pt?: string;
   icon: string;
   position: number;
   is_active: boolean;
@@ -89,6 +95,11 @@ export function CategorySection({ categories, experienceCounts, locale }: Catego
             const count = experienceCounts[category.id] || 0;
             const hasImage = category.image_url && !imageErrors[category.id];
             
+            // Obtenir le slug traduit
+            const categorySlug = locale === 'fr' 
+              ? category.slug 
+              : category[`slug_${locale}` as keyof typeof category] || category.slug;
+            
             return (
               <div
                 key={category.id}
@@ -98,7 +109,7 @@ export function CategorySection({ categories, experienceCounts, locale }: Catego
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <Link href={`/${locale}/${category.slug}`}>
+                <Link href={`/${locale}/${categorySlug}`}>
                   <article className="relative h-[220px] md:h-[240px] overflow-hidden cursor-pointer bg-white border border-gray-100 hover:border-gray-300 transition-all duration-300">
                     {/* Image avec overlay ou fallback */}
                     <div className="absolute inset-0">
